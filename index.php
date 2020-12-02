@@ -1,2 +1,5 @@
 <?php
-echo "Hello World";
+
+require('conexao.php');
+
+echo "Conexao bem sucedida";
