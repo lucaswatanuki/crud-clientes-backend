@@ -11,7 +11,11 @@ if (!empty($con)) {
         while ($row = mysqli_fetch_assoc($result)) {
             $clientes[$i]['id'] = $row['id'];
             $clientes[$i]['nome'] = $row['nome'];
+            $clientes[$i]['rg'] = $row['rg'];
             $clientes[$i]['cpf'] = $row['cpf'];
+            $clientes[$i]['telefone'] = $row['telefone'];
+            $clientes[$i]['dataNascimento'] = $row['dataNascimento'];
+
             $i++;
         }
 

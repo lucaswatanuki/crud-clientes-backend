@@ -1,29 +1,30 @@
 <?php
 
-require ('./config/conexao.php');
+require('./config/conexao.php');
 
 $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 
 if (isset($postdata) && !empty($postdata)) {
     if (!empty($con)) {
-        $pwd = mysqli_real_escape_string($con, trim(md5($request->password)));
         $username = mysqli_real_escape_string($con, trim($request->username));
     }
 
-    $sql = "SELECT * FROM usuario where username='$username' and password='$pwd'";
-
-    $result = mysqli_query($con, $sql);
-
-    $row = mysqli_num_rows($result);
+    $sql = "SELECT * FROM usuario where username='$username'";
 
     if ($result = mysqli_query($con, $sql)) {
-        http_response_code(200);
-        $rows = array();
+        $response = array();
         while ($row = mysqli_fetch_assoc($result)) {
-            $rows[] = $row;
+            if (password_verify($request->password, $row['password'])) {
+                http_response_code(201);
+                $response = [
+                    "id" => $row['id'],
+                    "username" => $row['username']
+                ];
+                echo json_encode($response);
+            } else http_response_code(401);
         }
-        echo json_encode($rows);
+        http_response_code(401);
     } else {
         http_response_code(404);
     }

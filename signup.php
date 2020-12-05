@@ -2,16 +2,20 @@
 
 include 'config/conexao.php';
 
+$postdata = file_get_contents("php://input");
+
 if (isset($postdata) && !empty($postdata)) {
     $request = json_decode($postdata);
 
-    if (trim($request->nome) === '') {
+    if (trim($request->username) === '') {
         return http_response_code(400);
     }
 
+    $pwd_criptografada = password_hash($request->password, PASSWORD_DEFAULT);
+
     if (!empty($con)) {
-        $username = mysqli_real_escape_string($con, trim($request->username));
-        $password = mysqli_real_escape_string($con, trim(md5($request->password)));
+        $username = mysqli_real_escape_string($con, $request->username);
+        $password = mysqli_real_escape_string($con, $pwd_criptografada);
     }
 
     $sql = "INSERT INTO `usuario`(`id`,`username`,`password`) VALUES (null,'{$username}','{$password}')";

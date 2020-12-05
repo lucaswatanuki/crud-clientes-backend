@@ -14,16 +14,18 @@ if (isset($postdata) && !empty($postdata)) {
     if (!empty($con)) {
         $nome = mysqli_real_escape_string($con, trim($request->nome));
         $rg = mysqli_real_escape_string($con, $request->rg);
+        $cpf = mysqli_real_escape_string($con, $request->cpf);
+        $telefone = mysqli_real_escape_string($con, $request->telefone);
+        $dataNascimento = mysqli_real_escape_string($con, $request->dataNascimento);
     }
 
-    $sql = "INSERT INTO `cliente`(`id`,`nome`,`rg`) VALUES (null,'{$nome}','{$rg}')";
+    $queryCliente = "INSERT INTO `cliente`(`id`,`nome`,`rg`, `cpf`, `telefone`, `dataNascimento`) 
+            VALUES (null,'{$nome}','{$rg}', '{$cpf}', '{$telefone}', '{$dataNascimento}')";
 
-    if (mysqli_query($con, $sql)) {
+    if (mysqli_query($con, $queryCliente)) {
         http_response_code(201);
         $response = [
-            'nome' => $nome,
-            'rg' => $rg,
-            'id' => mysqli_insert_id($con)
+            'mensagem' => "Cliente cadastrado com sucesso",
         ];
         echo json_encode($response);
     } else {
