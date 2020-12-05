@@ -3,21 +3,20 @@
 include 'config/conexao.php';
 
 if (!empty($con)) {
-    $id = ($_GET['id'] !== null && (int)$_GET['id'] > 0)? mysqli_real_escape_string($con, (int)$_GET['id']) : false;
+    $id = ($_GET['id'] !== null && (int)$_GET['id'] > 0) ? $con->real_escape_string((int)$_GET['id']) : false;
 }
 
-if(!$id)
-{
+if (!$id) {
     return http_response_code(400);
 }
 
-$sql = "DELETE FROM `cliente` WHERE `id` ='{$id}' LIMIT 1";
+$queryEndereco = "DELETE FROM `endereco` WHERE `idCliente` ='{$id}'";
+$queryCliente = "DELETE FROM `cliente` WHERE `id` ='{$id}' LIMIT 1";
 
-if(mysqli_query($con, $sql))
-{
-    http_response_code(204);
-}
-else
-{
+if ($con->query($queryEndereco)) {
+    if ($con->query($queryCliente)) {
+        http_response_code(204);
+    }
+} else {
     return http_response_code(422);
 }

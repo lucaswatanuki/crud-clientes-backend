@@ -6,9 +6,9 @@ $clientes = [];
 $sql = "SELECT * FROM cliente";
 
 if (!empty($con)) {
-    if ($result = mysqli_query($con, $sql)) {
+    if ($result = $con->query($sql)) {
         $i = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $clientes[$i]['id'] = $row['id'];
             $clientes[$i]['nome'] = $row['nome'];
             $clientes[$i]['rg'] = $row['rg'];
@@ -18,7 +18,6 @@ if (!empty($con)) {
 
             $i++;
         }
-
         echo json_encode($clientes);
     } else {
         http_response_code(404);

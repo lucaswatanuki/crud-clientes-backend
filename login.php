@@ -7,14 +7,14 @@ $request = json_decode($postdata);
 
 if (isset($postdata) && !empty($postdata)) {
     if (!empty($con)) {
-        $username = mysqli_real_escape_string($con, $request->username);
+        $username = $con->real_escape_string($request->username);
     }
 
     $sql = "SELECT * FROM usuario where username='$username'";
 
-    if ($result = mysqli_query($con, $sql)) {
+    if ($result = $con->query($sql)) {
         http_response_code(200);
-        $row = mysqli_fetch_assoc($result);
+        $row = $result->fetch_assoc();
         if (password_verify($request->password, $row['password'])) {
             $response = [
                 "username" => $row['username']

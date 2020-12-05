@@ -16,9 +16,9 @@ function connect()
     $username = getenv('DB_USERNAME');
     $password = getenv('DB_PASSWORD');
 
-    $connect = mysqli_connect($host ,$username ,$password ,$db_name);
+    $connect = new mysqli($host ,$username ,$password ,$db_name);
 
-    if (mysqli_connect_errno($connect)) {
+    if (mysqli_connect_errno()) {
         die("Falha ao conectar:" . mysqli_connect_error());
     }
 
