@@ -14,16 +14,16 @@ if (isset($postdata) && !empty($postdata)) {
     if (!empty($con)) {
         $id = $con->real_escape_string((int)$request->id);
         $nome = $con->real_escape_string($request->nome);
-        $rg = $con->real_escape_string($request->rg);
-        $cpf = $con->real_escape_string($request->cpf);
-        $telefone = $con->real_escape_string($request->telefone);
-        $dataNascimento = $con->real_escape_string($request->dataNascimento);
+        $numero = $con->real_escape_string($request->numero);
+        $cep = $con->real_escape_string($request->cep);
+        $cidade = $con->real_escape_string($request->cidade);
+        $estado = $con->real_escape_string($request->estado);
     }
 
-    $queryCliente = "UPDATE `cliente` SET `nome`='$nome',`rg`='$rg', `cpf`='$cpf', `telefone`='$telefone', `dataNascimento`='$dataNascimento' 
-            WHERE `id` = '{$id}' LIMIT 1";
+    $query = "UPDATE `endereco` SET `nome`='$nome',`numero`='$numero', `cep`='$cep', `cidade`='$cidade', `estado`='$estado' 
+            WHERE `id` = '{$id}'";
 
-    if ($con->query($queryCliente)) {
+    if ($con->query($query)) {
         http_response_code(204);
     } else {
         return http_response_code(422);
